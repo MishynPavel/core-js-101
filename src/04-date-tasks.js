@@ -52,10 +52,19 @@ function parseDataFromIso8601(value) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
-}
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  let flag = true;
+  if (year % 4 !== 0) {
+    flag = !flag;
+  } else if (year % 100 !== 0) {
+    flag = true;
+  } else if (year % 400 !== 0) {
+    flag = !flag;
+  }
 
+  return flag;
+}
 
 /**
  * Returns the string represention of the timespan between two dates.
@@ -72,8 +81,41 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  let diff = endDate.getTime() - startDate.getTime();
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  diff -= hours * (1000 * 60 * 60);
+
+  const mins = Math.floor(diff / (1000 * 60));
+  diff -= mins * (1000 * 60);
+
+  const seconds = Math.floor(diff / (1000));
+  diff -= seconds * (1000);
+
+  const milliseconds = Math.floor(diff / (1));
+  diff -= milliseconds * (1);
+
+  const hourStr = hours.toString().length === 1 ? `0${hours}` : hours;
+  const minStr = mins.toString().length === 1 ? `0${mins}` : mins;
+  const secondStr = seconds.toString().length === 1 ? `0${seconds}` : seconds;
+
+  let millSecStr = '';
+  switch (milliseconds.toString().length) {
+    case 3:
+      millSecStr = milliseconds;
+      break;
+    case 2:
+      millSecStr = `0${milliseconds}`;
+      break;
+    case 1:
+      millSecStr = `00${milliseconds}`;
+      break;
+    default:
+      throw new Error('Not implemented');
+  }
+
+  return `${hourStr}:${minStr}:${secondStr}.${millSecStr}`;
 }
 
 

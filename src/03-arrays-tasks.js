@@ -55,7 +55,6 @@ function generateOdds(len) {
 function doubleArray(arr) {
   const merge = [];
   merge.push(arr, arr);
-
   return merge.flat();
 }
 

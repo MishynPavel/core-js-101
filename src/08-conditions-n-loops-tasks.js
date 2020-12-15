@@ -57,10 +57,15 @@ function getFizzBuzz(num) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  let fact = 1;
+  let i = 1;
+  while (i <= n) {
+    fact *= i;
+    i += 1;
+  }
+  return fact;
 }
-
 
 /**
  * Returns the sum of integer numbers between n1 and n2 (inclusive).
@@ -96,8 +101,8 @@ function getSumBetweenNumbers(n1, n2) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return a + b > c && a + c > b && b + c > a;
 }
 
 
@@ -133,10 +138,9 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  return (rect1.top + rect1.height > rect2.top && rect1.left + rect1.width > rect2.left);
 }
-
 
 /**
  * Returns true, if point lies inside the circle, otherwise false.
@@ -164,10 +168,10 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return (Math.sqrt((point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2) < circle
+    .radius);
 }
-
 
 /**
  * Returns the first non repeated char in the specified strings otherwise returns null.
@@ -180,8 +184,12 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length; i += 1) {
+    const letter = str[i];
+    if (str.slice().replace(letter, '').indexOf(letter) === -1) return letter;
+  }
+  return null;
 }
 
 
@@ -207,8 +215,12 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const left = isStartIncluded ? '[' : '(';
+  const right = isEndIncluded ? ']' : ')';
+  const leftNumber = a < b ? a : b;
+  const rightNumber = a > b ? a : b;
+  return `${left}${leftNumber}, ${rightNumber}${right}`;
 }
 
 
@@ -224,8 +236,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -241,8 +253,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +num.toString().split('').reverse().join('');
 }
 
 
@@ -266,9 +278,22 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const ccnStr = ccn.toString();
+  let sum = 0;
+  for (let i = 0; i < ccnStr.length; i += 1) {
+    let digit = parseInt(ccnStr[i], 10);
+    if ((ccnStr.length - i) % 2 === 0) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+    sum += digit;
+  }
+  return sum % 10 === 0;
 }
+
 
 /**
  * Returns the digital root of integer:
@@ -284,8 +309,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const numArr = num.toString().split('');
+  let sum = 0;
+  numArr.forEach((item) => {
+    sum += Number(item);
+  });
+  if (sum > 9) return getDigitalRoot(sum);
+  return sum;
 }
 
 
@@ -310,8 +341,14 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  let workString = str;
+  const brackets = /(\[\]|\(\)|\{\}|<>)/;
+
+  while (brackets.test(workString)) {
+    workString = workString.replace(brackets, '');
+  }
+  return workString.length === 0;
 }
 
 
@@ -335,8 +372,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -352,8 +389,27 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let matched = '';
+  const arr = [];
+  pathes.forEach((item, index, array) => {
+    matched = '';
+    if (index === array.length - 1) return;
+    const nextItem = array[index + 1];
+    const len = item.length <= nextItem ? item.length : nextItem.length;
+    for (let i = 0; i < len; i += 1) {
+      const letter1 = item[i];
+      const letter2 = nextItem[i];
+      if (letter1 !== letter2) {
+        arr.push(matched);
+        return;
+      }
+      matched += letter1;
+    }
+  });
+  const path = arr.reduce((prev, curr) => (prev === curr ? curr : ''));
+  const ind = path.lastIndexOf('/');
+  return path.slice(0, ind + 1);
 }
 
 
@@ -375,8 +431,18 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = Array(m1.length);
+  for (let m1row = 0; m1row < m1.length; m1row += 1) {
+    result[m1row] = Array(m2[0].length);
+    for (let m2col = 0; m2col < m2[0].length; m2col += 1) {
+      result[m1row][m2col] = 0;
+      for (let m1col = 0; m1col < m1[0].length; m1col += 1) {
+        result[m1row][m2col] += m1[m1row][m1col] * m2[m1col][m2col];
+      }
+    }
+  }
+  return result;
 }
 
 
